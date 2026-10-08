@@ -36,6 +36,7 @@
             padding-bottom: 50px;
         }
 
+        /* Floating Background Hearts */
         .heart-bg {
             position: fixed;
             top: 0;
@@ -61,6 +62,7 @@
             100% { transform: translateY(-105vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
 
+        /* Main Mobile Container */
         .container {
             width: 100%;
             max-width: 480px;
@@ -71,6 +73,7 @@
             gap: 24px;
         }
 
+        /* Header Banner */
         .header-card {
             background: linear-gradient(135deg, rgba(255, 77, 109, 0.25), rgba(255, 117, 143, 0.12));
             border: 1px solid rgba(255, 77, 109, 0.4);
@@ -102,6 +105,7 @@
             font-weight: 600;
         }
 
+        /* Audio Control Bar */
         .music-bar {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -136,6 +140,7 @@
             box-shadow: 0 4px 15px rgba(255, 77, 109, 0.5);
         }
 
+        /* Gallery Grid */
         .section-title {
             font-size: 1.25rem;
             text-align: center;
@@ -158,6 +163,7 @@
             position: relative;
             aspect-ratio: 4/5;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
         }
 
         .photo-card img {
@@ -179,6 +185,7 @@
             color: #ffffff;
         }
 
+        /* Love Letter Card */
         .letter-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -205,6 +212,7 @@
             margin-top: 16px;
         }
 
+        /* Proposal Section */
         .proposal-card {
             background: linear-gradient(135deg, rgba(255, 77, 109, 0.3), rgba(120, 0, 60, 0.35));
             border: 1.5px solid var(--primary);
@@ -249,7 +257,8 @@
             position: relative;
         }
 
-        .success-overlay {
+        /* Overlay Modals */
+        .success-overlay, .lightbox {
             display: none;
             position: fixed;
             top: 0;
@@ -265,7 +274,7 @@
             text-align: center;
         }
 
-        .success-overlay.active {
+        .success-overlay.active, .lightbox.active {
             display: flex;
         }
 
@@ -273,6 +282,13 @@
             font-size: 2.2rem;
             color: var(--primary);
             margin-bottom: 14px;
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
     </style>
 </head>
@@ -288,6 +304,7 @@
             <div class="sender">With all my love, Syed Zulfiqar Mehdi ❤️</div>
         </div>
 
+        <!-- Audio Player linked directly to song.mp3 in root -->
         <div class="music-bar">
             <div class="music-info">
                 <span>🎵</span>
@@ -295,33 +312,33 @@
             </div>
             <button class="play-btn" id="musicBtn" onclick="toggleMusic()">▶</button>
         </div>
-        <!-- Song Path -->
-        <audio id="bgMusic" loop src="music/song.mp3"></audio>
+        <audio id="bgMusic" loop src="song.mp3"></audio>
 
+        <!-- Gallery linked directly to pic1.jpeg through pic6.jpeg in root -->
         <div class="section-title">Our Precious Moments 📸</div>
         <div class="gallery">
-            <div class="photo-card">
-                <img src="images/pic1.jpg" alt="Memory 1">
+            <div class="photo-card" onclick="openLightbox('pic1.jpeg')">
+                <img src="pic1.jpeg" alt="Memory 1">
                 <div class="photo-caption">Our Journey Starts ❤️</div>
             </div>
-            <div class="photo-card">
-                <img src="images/pic2.jpg" alt="Memory 2">
+            <div class="photo-card" onclick="openLightbox('pic2.jpeg')">
+                <img src="pic2.jpeg" alt="Memory 2">
                 <div class="photo-caption">Sweetest Smile ✨</div>
             </div>
-            <div class="photo-card">
-                <img src="images/pic3.jpg" alt="Memory 3">
+            <div class="photo-card" onclick="openLightbox('pic3.jpeg')">
+                <img src="pic3.jpeg" alt="Memory 3">
                 <div class="photo-caption">Unforgettable Days 🌹</div>
             </div>
-            <div class="photo-card">
-                <img src="images/pic4.jpg" alt="Memory 4">
+            <div class="photo-card" onclick="openLightbox('pic4.jpeg')">
+                <img src="pic4.jpeg" alt="Memory 4">
                 <div class="photo-caption">Pure Joy 😊</div>
             </div>
-            <div class="photo-card">
-                <img src="images/pic5.jpg" alt="Memory 5">
+            <div class="photo-card" onclick="openLightbox('pic5.jpeg')">
+                <img src="pic5.jpeg" alt="Memory 5">
                 <div class="photo-caption">Together Always 💖</div>
             </div>
-            <div class="photo-card">
-                <img src="images/pic6.jpg" alt="Memory 6">
+            <div class="photo-card" onclick="openLightbox('pic6.jpeg')">
+                <img src="pic6.jpeg" alt="Memory 6">
                 <div class="photo-caption">My Whole World 🌍</div>
             </div>
         </div>
@@ -343,13 +360,20 @@
 
     </div>
 
+    <!-- Success Celebration Modal -->
     <div class="success-overlay" id="successOverlay">
         <h2>I Love You Forever! ❤️</h2>
         <p>You have made me the happiest person in the world, Javeria Zahid! 💍✨<br><br>Forever & Always,<br><strong>Syed Zulfiqar Mehdi</strong></p>
         <button class="btn btn-yes" onclick="closeOverlay()">Close ❤️</button>
     </div>
 
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightboxImg" src="" alt="Enlarged Memory">
+    </div>
+
     <script>
+        // Floating Heart Background
         const heartBg = document.getElementById('heartBg');
         const hearts = ['❤️', '💖', '💗', '💕', '✨', '🌹'];
         
@@ -363,6 +387,7 @@
             heartBg.appendChild(heart);
         }
 
+        // Music Play/Pause Handler
         const music = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
         let isPlaying = false;
@@ -371,16 +396,18 @@
             if (isPlaying) {
                 music.pause();
                 musicBtn.innerText = '▶';
+                isPlaying = false;
             } else {
                 music.play().then(() => {
                     musicBtn.innerText = '⏸';
                     isPlaying = true;
                 }).catch(err => {
-                    alert("Music file not found! Please check if music/song.mp3 exists in your repository.");
+                    alert("Music play error. Please check if song.mp3 is valid!");
                 });
             }
         }
 
+        // Dodging No Button
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             const x = Math.random() * (window.innerWidth - 120) - (window.innerWidth / 2 - 60);
@@ -388,12 +415,23 @@
             noBtn.style.transform = `translate(${x}px, ${y}px)`;
         }
 
+        // Proposal Response
         function acceptProposal() {
             document.getElementById('successOverlay').classList.add('active');
         }
 
         function closeOverlay() {
             document.getElementById('successOverlay').classList.remove('active');
+        }
+
+        // Lightbox Functions
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
         }
     </script>
 </body>
